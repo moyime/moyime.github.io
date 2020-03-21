@@ -1,0 +1,74 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta name="generator" content="Hexo 3.9.0"><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description"><link rel="stylesheet" type="text/css" href="//fonts.loli.net/css?family=Source+Code+Pro"><link rel="stylesheet" type="text/css" href="/css/style.css?v=2.0.4"><link rel="stylesheet" type="text/css" href="/css/highlight.css?v=2.0.4"><link rel="Shortcut Icon" href="/favicon.ico"><link rel="bookmark" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"><title>Vuex笔记 | Moyime个人博客</title></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">Vuex笔记</h1><a id="logo" href="/.">Moyime个人博客</a><p class="description">我也认真敷衍你</p></div><div id="nav-menu"><a href="/." class="current"><i class="fa fa-home"> 首页</i></a><a href="/archives/"><i class="fa fa-archive"> 归档</i></a></div><div id="search-form"><div id="result-mask" class="hide"></div><label><input id="search-key" type="text" autocomplete="off" placeholder="搜索"></label><div id="result-wrap" class="hide"><div id="search-result"></div></div><div class="hide"><template id="search-tpl"><div class="item"><a href="/{path}" title="{title}"><div class="title">{title}</div><div class="time">{date}</div><div class="tags">{tags}</div></a></div></template></div></div></div><div id="layout" class="layout-g"><div class="layout-l"><div class="content_container"><div class="post"><h1 class="post-title">Vuex笔记</h1><div class="post-meta"><a href="/2020/03/21/vuex笔记/#comments" class="comment-count"></a><p><span class="date">Mar 21, 2020</span><span><a href="/categories/web前端/" class="category">web前端</a></span><span><i id="busuanzi_container_page_pv"><i id="busuanzi_value_page_pv"></i><i>点击</i></i></span></p></div><div class="post-content"><h2 id="Vuex-是什么"><a href="#Vuex-是什么" class="headerlink" title="Vuex 是什么"></a>Vuex 是什么</h2><p>Vuex是专门为Vue.js提供的状态管理模式</p>
+<p>将组件的共享状态抽取出来，以一个全局的单例模式管理 </p>
+<p>Vuex的核心是store(仓库)</p>
+<p>Vuex 使用单一状态树,它便作为一个“唯一数据源”而存在</p>
+<h2 id="Vuex和单纯的全局对象的区别"><a href="#Vuex和单纯的全局对象的区别" class="headerlink" title="Vuex和单纯的全局对象的区别"></a>Vuex和单纯的全局对象的区别</h2><ul>
+<li>Vuex的状态存储是响应式的</li>
+<li>Vuex中改变store中状态的唯一途径是 显式地<strong>提交（commit）mutation</strong>,这样可以方便的跟踪每一个状态的变化</li>
+</ul>
+<h2 id="应用场景"><a href="#应用场景" class="headerlink" title="应用场景"></a>应用场景</h2><ul>
+<li>多个视图依赖于同一个状态</li>
+<li>来自不同视图的行为需要变更同一个状态</li>
+</ul>
+<h2 id="核心概念"><a href="#核心概念" class="headerlink" title="核心概念"></a>核心概念</h2><h3 id="state—单一状态树（数据源）"><a href="#state—单一状态树（数据源）" class="headerlink" title="state—单一状态树（数据源）"></a>state—单一状态树（数据源）</h3><ul>
+<li><p>state</p>
+</li>
+<li><p>mapState</p>
+<h3 id="getter—-可以认为是store的计算属性"><a href="#getter—-可以认为是store的计算属性" class="headerlink" title="getter— 可以认为是store的计算属性"></a>getter— 可以认为是store的计算属性</h3><p>getters 的返回值会根据它的依赖被缓存起来，且只有当它的依赖值发生了改变才会被重新计算</p>
+</li>
+<li><p>getters</p>
+<ul>
+<li><p>第一个参数：state</p>
+</li>
+<li><p>可接受第二个参数： 其他的getters</p>
+</li>
+<li><p>第三个参数：rootState</p>
+</li>
+<li><p>第四个参数：rootGetters</p>
+</li>
+<li><p>通过方法访问</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">getters: &#123;</span><br><span class="line">    // ...</span><br><span class="line">    getTodoById: (state) =&gt; (id) =&gt; &#123;</span><br><span class="line">        return state.todos.find(todo =&gt; todo.id === id)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">store.getters.getTodoById(2)</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+<li><p>mapGetters</p>
+<h3 id="mutation—-处理同步事务"><a href="#mutation—-处理同步事务" class="headerlink" title="mutation—-处理同步事务"></a>mutation—-处理同步事务</h3><p>更改Vuex的store中的状态的唯一方法是提交mutation</p>
+</li>
+</ul>
+<p>mutation必须是同步函数—–因为：每一条 mutation 被记录，devtools 都需要捕捉到前一状态和后一状态的快照</p>
+<p>参数：</p>
+<ol>
+<li>state</li>
+<li>payload</li>
+</ol>
+<ul>
+<li>mutation</li>
+<li>mapMutations</li>
+</ul>
+<h4 id="提交载荷（Payload）"><a href="#提交载荷（Payload）" class="headerlink" title="提交载荷（Payload）"></a>提交载荷（Payload）</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">store.commit(&apos;increment&apos;, 10)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">store.commit(&apos;increment&apos;, &#123;</span><br><span class="line">  amount: 10</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">store.commit(&#123;</span><br><span class="line">  type: &apos;increment&apos;,</span><br><span class="line">  amount: 10</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<h3 id="action—-处理异步事务"><a href="#action—-处理异步事务" class="headerlink" title="action—-处理异步事务"></a>action—-处理异步事务</h3><p>Action 类似于 mutation，不同在于：</p>
+<ul>
+<li>Action 提交的是 mutation，而不是直接变更状态</li>
+<li>Action 可以包含任意异步操作</li>
+</ul>
+<p>Action 函数接受一个与 store 实例具有相同方法和属性的 context 对象</p>
+<h4 id="分发Action"><a href="#分发Action" class="headerlink" title="分发Action"></a>分发Action</h4><p>Action 通过store.dispatch 方法触发</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">store.dispatch(&apos;increment&apos;)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>action</li>
+<li>mapActions</li>
+</ul>
+<h2 id="Module"><a href="#Module" class="headerlink" title="Module"></a>Module</h2><p>通过添加 namespaced: true 的方式使其成为带命名空间的模块。当模块被注册后，它的所有 getter、action 及 mutation 都会自动根据模块注册的路径调整命名</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">const moduleA = &#123;</span><br><span class="line">    namespaced: true,</span><br><span class="line">    state: &#123; ... &#125;,</span><br><span class="line">    mutations: &#123; ... &#125;,</span><br><span class="line">    actions: &#123; ... &#125;,</span><br><span class="line">    getters: &#123; ... &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">const moduleB = &#123;</span><br><span class="line">    namespaced: true</span><br><span class="line">    state: &#123; ... &#125;,</span><br><span class="line">    mutations: &#123; ... &#125;,</span><br><span class="line">    actions: &#123; ... &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">const store = new Vuex.Store(&#123;</span><br><span class="line">    modules: &#123;</span><br><span class="line">        a: moduleA,</span><br><span class="line">        b: moduleB</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>参考：</p>
+<p><a href="https://vuex.vuejs.org/zh/" target="_blank" rel="noopener">Vuex官方文档</a></p>
+</div><div class="post-copyright"><blockquote><p>原文作者: Moyime</p><p>原文链接: <a href="https://moyime.github.io/2020/03/21/vuex笔记/">https://moyime.github.io/2020/03/21/vuex笔记/</a></p><p>版权声明: 转载请注明出处(必须保留作者署名及链接)</p></blockquote></div><div class="tags"><a href="/tags/Vuex/">Vuex</a></div><div class="post-share"><div class="social-share"><span>分享到:</span></div></div><div class="post-nav"><a href="/2020/03/17/宏任务与微任务/" class="next"></a></div><div id="comments"></div></div></div></div><div class="layout-r"><div id="sidebar"><div class="search-pla"></div><div id="toc" class="widget"><div class="widget-title"><i class="fa fa-fei">文章目录</i></div><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Vuex-是什么"><span class="toc-text">Vuex 是什么</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Vuex和单纯的全局对象的区别"><span class="toc-text">Vuex和单纯的全局对象的区别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#应用场景"><span class="toc-text">应用场景</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#核心概念"><span class="toc-text">核心概念</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#state—单一状态树（数据源）"><span class="toc-text">state—单一状态树（数据源）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#getter—-可以认为是store的计算属性"><span class="toc-text">getter— 可以认为是store的计算属性</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#mutation—-处理同步事务"><span class="toc-text">mutation—-处理同步事务</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#提交载荷（Payload）"><span class="toc-text">提交载荷（Payload）</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#action—-处理异步事务"><span class="toc-text">action—-处理异步事务</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#分发Action"><span class="toc-text">分发Action</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Module"><span class="toc-text">Module</span></a></li></ol></div><div class="widget"><div class="widget-title"><i class="fa fa-xie"> 最新文章</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2020/03/21/vuex笔记/">Vuex笔记</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/03/17/宏任务与微任务/">宏任务与微任务</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/03/17/JavaScript类型转换/">JavaScript类型转换</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/03/17/ES6_Class笔记/">ES6_Class笔记</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/03/17/正则表达式/">正则表达式</a></li><li class="post-list-item"><a class="post-list-link" href="/2020/03/17/单页应用与多页面应用/">单页应用与多页面应用</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/11/26/vue笔记/">vue笔记</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/10/24/css布局/">CSS布局</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/10/24/笔记css/">笔记</a></li><li class="post-list-item"><a class="post-list-link" href="/2019/10/22/css盒模型/">css盒模型</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-gui"> 分类</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/web前端/">web前端</a><span class="category-list-count">12</span></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-biao"> 标签</i></div><div class="tagcloud"><a href="/tags/css/" style="font-size: 15px;">css</a> <a href="/tags/Vuex/" style="font-size: 15px;">Vuex</a> <a href="/tags/vue笔记/" style="font-size: 15px;">vue笔记</a> <a href="/tags/Javascript/" style="font-size: 15px;">Javascript</a> <a href="/tags/笔记/" style="font-size: 15px;">笔记</a> <a href="/tags/JavaScript/" style="font-size: 15px;">JavaScript</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-archive"> 归档</i></div><ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/03/">三月 2020</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">十一月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">十月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a></li></ul></div></div></div></div><a id="totop" href="#top"></a><div id="footer"><div class="footer-info"><p><span> Copyright &copy;<a href="/." rel="nofollow">Moyime.</a></span><span> Theme by<a rel="nofollow" target="_blank" href="https://github.com/chaooo/hexo-theme-BlueLake"> BlueLake.</a></span></p></div></div></div><script src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script><script type="text/javascript" src="/js/search.json.js?v=2.0.4"></script><script type="text/javascript" src="/js/toctotop.js?v=2.0.4" async></script><link rel="stylesheet" type="text/css" href="/share/css/share.css"><script type="text/javascript" src="/share/js/social-share.js" charset="utf-8"></script><script type="text/javascript" src="/share/js/qrcode.js" charset="utf-8"></script></body></html>
